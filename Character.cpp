@@ -1,7 +1,5 @@
 #include <unistd.h>
 #include "Entity.cpp"
-#include <unistd.h>
-
 
 #define UP      0
 #define LEFT    1
