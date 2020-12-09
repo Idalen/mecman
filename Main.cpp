@@ -1,5 +1,7 @@
 #include "Mecman.cpp"
 
+
+
 int main(int argc, char const *argv[])
 {
 	initscr();
@@ -10,7 +12,7 @@ int main(int argc, char const *argv[])
 
 	getmaxyx(stdscr, row, col);
 
-	Mecman mecman(col/2, row/2);
+	Mecman mecman(col/2, row/2, RIGHT);
 
 	mvprintw(row/2, (col-25)/2, "PRESS ANY KEY TO START...");
 
@@ -21,7 +23,6 @@ int main(int argc, char const *argv[])
 
 	while(TRUE)
 	{	
-
 		timeout(0);
 		mecman.input();
 		mvaddch(mecman.getY(), mecman.getX(), ' ');
