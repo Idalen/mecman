@@ -3,4 +3,4 @@
 class Super: public Entity
 {
 
-}
+};

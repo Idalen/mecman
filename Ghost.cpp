@@ -8,7 +8,7 @@ class Ghost: public Character
         virtual void chase();
 
         // Determines the pathing of the Ghost while Pacman is invincible
-        virtual void flee();
+        virtual void scatter();
 
         // TODO
         // "Kills" the Ghost. Happens when Pacman touches the ghost while invincible
