@@ -1,7 +1,7 @@
 #include "Ghost.cpp"
 
 // Orange ghost
-class : public Ghost
+class Clyde: public Ghost
 {
         // TODO
         // Clyde moves randomly

@@ -1,7 +1,7 @@
 #include "Ghost.cpp"
 
 // Pink ghost
-class : public Ghost
+class Pinky: public Ghost
 {
     public:
 

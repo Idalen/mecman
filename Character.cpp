@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "Entity.cpp"
 
 #define UP      0  
@@ -31,7 +32,7 @@ class Character: public Entity
 
         // "Kills" either the ghost or Mecman, based if the latter was invincible or not
         // when they touched
-        virtual void kill();
+        virtual void kill() {};
 
         // Getters/Setters
         int getDirection() {return direction;}

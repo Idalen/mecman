@@ -1,5 +1,4 @@
 #include "Mecman.cpp"
-#include <unistd.h>
 
 int main(int argc, char const *argv[])
 {
@@ -11,7 +10,7 @@ int main(int argc, char const *argv[])
 
 	getmaxyx(stdscr, row, col);
 
-	Mecman mecman(col/2, row/2, RIGHT);
+	Mecman mecman(col/2, row/2);
 
 	mvprintw(row/2, (col-25)/2, "PRESS ANY KEY TO START...");
 
