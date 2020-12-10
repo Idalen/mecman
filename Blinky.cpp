@@ -5,6 +5,9 @@ class Blinky: public Ghost
 {
     public:
 
+        // Uses Character constructor
+        using Ghost::Ghost;
+
         // TODO
         // Blinky chases after Mecman through the shortest path
         void chase()

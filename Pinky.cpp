@@ -5,6 +5,9 @@ class Pinky: public Ghost
 {
     public:
 
+        // Uses Character constructor
+        using Ghost::Ghost;
+        
         // TODO
         // Pinky tries to get in front of mecman
         void chase()

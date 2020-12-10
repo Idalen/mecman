@@ -1,40 +1,95 @@
-#include <ncurses.h> /* Biblioteca para o sistema de I/O do jogo. 
-					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
-#include "Mecman.cpp"
+#include <thread>
+#include "Blinky.cpp"
+#include "Pinky.cpp"
+#include "Inky.cpp"
+#include "Clyde.cpp"
+#include "Scoreboard.cpp"
+#include "GameThreads.cpp"
+using namespace std;
+
+// Prints the game inital screen
+void gameStart(int width, int height)
+{
+	mvprintw(width/2, (height-25)/2, "PRESS ANY KEY TO START..."); 
+	refresh();
+	getch();
+	mvprintw(width/2, (height-25)/2, "                         ");
+}
+
+// Prints the game over screen
+void gameOver(int width, int height)
+{
+	mvprintw(width/2, (height-25)/2, "GAME OVER"); 
+	refresh();
+	getch();
+	mvprintw(width/2, (height-25)/2, "                         ");
+}
 
 int main(int argc, char const *argv[])
 {
-	initscr();  // Inicia a biblioteca
-	cbreak();	// Permite o uso de ctrl+c para interromper o programa
-	noecho();	// Nao imprime os caracteres pressionados no terminal
+	initscr();  // Initializes the library
+	cbreak();	// Allows the usage of ctrl+c to interrupt the program
+	noecho();	// Makes it so that pressed characters are not printed in the terminal
 
-	int row, col;
+	// Receives the width and height of the screen
+	int width, height;
+	getmaxyx(stdscr, width, height);
 
-	getmaxyx(stdscr, row, col); // Pega a altura e a largura da janela do terminal
+	gameStart(width, height); // Shows the starting screen
 
-	Mecman mecman(col/2, row/2); 
+	// Initializes the classes
+	Mecman mecman(height/2, width/2, RIGHT, 'M');
+	// TODO Set default spawning coordinates and direction for ghosts
+	Blinky blinky(0,0,0, 'B');
+	Pinky pinky(0,0,0, 'P');
+	Inky inky(0,0,0, 'I');
+	Clyde clyde(0,0,0, 'C');
+	Scoreboard scoreboard(3,0,1);
 
-	// Printa a mensagem inicial no centro do terminal
-	mvprintw(row/2, (col-25)/2, "PRESS ANY KEY TO START..."); 
-	refresh(); // Mostra o resultado da modificação da tela
+	// Initializes the game threads
+	thread one(GameThreads::receiveInput, mecman); 				// Receives user input for Mecman's movement
+	thread two(GameThreads::showMovement, mecman);				// Shows Mecman moving
+	thread three(GameThreads::ghostBehavior, blinky, mecman); 	// Initializes ghost behavior
+	thread four(GameThreads::ghostBehavior, pinky, mecman);
+	thread five(GameThreads::ghostBehavior, inky, mecman);
+	thread six(GameThreads::ghostBehavior, clyde, mecman);
+	thread seven(GameThreads::showMovement, blinky);			// Shows ghosts moving
+	thread eight(GameThreads::showMovement, pinky);
+	thread nine(GameThreads::showMovement, inky);
+	thread ten(GameThreads::showMovement, clyde);
 
-	getch();
-
-	mvprintw(row/2, (col-25)/2, "                         ");
-
+	// If Mecman touches a ghost, subtracts a life or ends the game
 	while(TRUE)
-	{	
-		timeout(0);         // Faz com que o programa não espere uma entrada do 
-							// usuario para continuar
-		mecman.input(getch());
-		mvaddch(mecman.getY(), mecman.getX(), ' ');
-		mecman.move();
-		mvaddch(mecman.getY(), mecman.getX(), 'C');
+		if (mecman.touching(blinky) | mecman.touching(pinky) 
+			| mecman.touching(inky) | mecman.touching(clyde))
+		{	
+			mecman.kill(); // Kills Mecman
 
-		refresh();
-	}
+			// If Mecman has no lives left, ends the game
+			if (scoreboard.getLives() < 0)
+			{	
+				// Terminates the game threads
+				thread(one);
+				thread(two);
+				thread(three);
+				thread(four);
+				thread(five);
+				thread(six);
+				thread(seven);
+				thread(eight);
+				thread(nine);
+				thread(ten);
 
-	endwin(); // Finaliza a biblioteca
+				gameOver(width, height); // Shows the game over screen
+
+				break; // Ends the game loop
+			}
+
+			// Subtracts a life
+			scoreboard.setLives(scoreboard.getLives()-1);
+		}
+
+	endwin(); // Closes the library
 
 	return 0;
 }

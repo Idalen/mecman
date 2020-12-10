@@ -3,6 +3,10 @@
 // Orange ghost
 class Clyde: public Ghost
 {
+
+        // Uses Character constructor
+        using Ghost::Ghost;
+        
         // TODO
         // Clyde moves randomly
         void chase()

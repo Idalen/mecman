@@ -8,7 +8,7 @@ class Mecman: public Character
     public:
 
         // Uses parent constructor
-        explicit Mecman(int X, int Y) : Character(X, Y, RIGHT) {};
+        using Character::Character;
 
         // Changes Mecman's direction based on the user's input
         void input(char key)

@@ -5,6 +5,9 @@ class Inky: public Ghost
 {
     public:
 
+        // Uses Character constructor
+        using Ghost::Ghost;
+        
         // TODO
         // Inky patrols a certain radius around Mecman
         void chase()

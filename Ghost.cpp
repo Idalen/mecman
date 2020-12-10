@@ -4,6 +4,9 @@ class Ghost: public Character
 {
     public:
 
+        // Uses Character constructor
+        using Character::Character;
+
         // Determines the pathing of the Ghost while Pacman is not invincible
         virtual void chase() {};
 

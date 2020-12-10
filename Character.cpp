@@ -11,9 +11,10 @@ class Character: public Entity
 {
     public:
 
-        explicit Character(int X, int Y, int direction) : Entity(X, Y)
+        explicit Character(int X, int Y, int direction, char icon) : Entity(X, Y)
         {
             this->direction = direction;
+            this->icon = icon;
         }
 
         // Makes the Character move in a certain direction
@@ -36,8 +37,11 @@ class Character: public Entity
 
         // Getters/Setters
         int getDirection() {return direction;}
+        char getIcon() {return icon;}
         void setDirection(int direction) {this->direction = direction;}
+        void setIcon(char icon) {this->icon = icon;}
     
     protected:
-        int direction;
+        int direction;  // The direction that the character is facing
+        char icon;      // The letter that represents the character on the terminal
 };
