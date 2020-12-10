@@ -1,8 +1,6 @@
 #include <iostream>
 #include <cstring>
 #include <pthread.h>
-#include <ncurses.h> /* Biblioteca para o sistema de i/o do jogo. 
-					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
 #include "Character.cpp"
 
 class Mecman: public Character
@@ -13,10 +11,8 @@ class Mecman: public Character
         explicit Mecman(int X, int Y) : Character(X, Y, RIGHT) {};
 
         // Changes Mecman's direction based on the user's input
-        void input()
+        void input(char key)
         {
-            char key = getch();
-
             switch(key)
             {
                 case 'w':

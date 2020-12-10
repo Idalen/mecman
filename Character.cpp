@@ -30,8 +30,8 @@ class Character: public Entity
                 this->X++;
         }
 
-        // "Kills" either the ghost or Mecman, based if the latter was invincible or not
-        // when they touched
+        // "Kills" either the ghost or Mecman, based on if the latter was invincible or not
+        // when they touched each other
         virtual void kill() {};
 
         // Getters/Setters
