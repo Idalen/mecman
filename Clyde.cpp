@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "Ghost.cpp"
 
 // Orange ghost
@@ -10,8 +11,9 @@ class Clyde: public Ghost
         // TODO
         // Clyde moves randomly
         void chase()
-        {
-
+        {       
+                while (goingToHitWall())
+                        this->direction = rand()%4;
         }
 
         // TODO

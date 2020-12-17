@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include "Map.cpp"
 
 #define UP      0
 #define LEFT    1
@@ -8,7 +9,7 @@
 
 class Character
 {
-    private:
+    protected:
         int direction;
         int X, Y;
 
@@ -25,27 +26,57 @@ class Character
         void move()
         {
             usleep(DELAY);
-            if(this->direction == UP)
-                this->Y--;
-            else if(this->direction == LEFT)
-                this->X--;
-            else if(this->direction == DOWN)
-                this->Y++;
-            else if(this->direction == RIGHT)
-                this->X++;
+
+            switch(direction)
+            {
+                case UP:
+                    Y++;
+                    break;
+                case LEFT:
+                    X--;
+                    break;
+                case DOWN:
+                    Y--;
+                    break;
+                case RIGHT:
+                    X++;
+                    break;
+            }
         }
 
         // "Kills" either the ghost or Mecman, based on if the latter was invincible or not
         // when they touched each other
         virtual void kill() {};
 
+        // Verifies if the Character is going to hit a wall
+        bool goingToHitWall(Map map)
+        {
+            switch(direction)
+            {
+                case UP:
+                    if (map.at(X,Y+1) == WALL)
+                        return true;
+                case LEFT:
+                    if (map.at(X-1,Y) == WALL)
+                        return true;
+                case DOWN:
+                    if (map.at(X,Y-1) == WALL)
+                        return true;
+                case RIGHT:
+                    if (map.at(X+1,Y) == WALL)
+                        return true;
+            }
+
+            return false;
+        }
+
+        virtual void changeDirection() {};
+
         // Getters/Setters
         int getX(){return X;}
         int getY() {return Y;}
+        int getDirection() {return direction;}
         void setX(int X) {this->X = X;}
         void setY(int Y) {this->Y = Y;}
-        int getDirection() {return direction;}
         void setDirection(int direction) {this->direction = direction;}
-        int getX(){ return this->X;}
-        int getY(){ return this->Y;}
 };
