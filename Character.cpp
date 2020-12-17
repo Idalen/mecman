@@ -5,16 +5,22 @@
 #define LEFT    1
 #define DOWN    2
 #define RIGHT   3
-#define DELAY   200000
+#define DELAY   0
 
 class Character: public Entity
 {
+
+    private:
+        int direction;
+        int X, Y;
+
     public:
 
         explicit Character(int X, int Y, int direction, char icon) : Entity(X, Y)
         {
             this->direction = direction;
-            this->icon = icon;
+            this->X = X;
+            this->Y = Y;
         }
 
         // Makes the Character move in a certain direction
@@ -39,9 +45,6 @@ class Character: public Entity
         int getDirection() {return direction;}
         char getIcon() {return icon;}
         void setDirection(int direction) {this->direction = direction;}
-        void setIcon(char icon) {this->icon = icon;}
-    
-    protected:
-        int direction;  // The direction that the character is facing
-        char icon;      // The letter that represents the character on the terminal
+        int getX(){ return this->X;}
+        int getY(){ return this->Y;}
 };

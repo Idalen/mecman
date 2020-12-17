@@ -1,95 +1,98 @@
-#include <thread>
-#include "Blinky.cpp"
-#include "Pinky.cpp"
-#include "Inky.cpp"
-#include "Clyde.cpp"
-#include "Scoreboard.cpp"
-#include "GameThreads.cpp"
-using namespace std;
+#include <ncurses.h> /* Biblioteca para o sistema de i/o do jogo. 
+					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
+#include "Mecman.cpp"
 
-// Prints the game inital screen
-void gameStart(int width, int height)
-{
-	mvprintw(width/2, (height-25)/2, "PRESS ANY KEY TO START..."); 
-	refresh();
-	getch();
-	mvprintw(width/2, (height-25)/2, "                         ");
-}
+#define HEIGHT 16
+#define WIDTH 51
 
-// Prints the game over screen
-void gameOver(int width, int height)
-{
-	mvprintw(width/2, (height-25)/2, "GAME OVER"); 
-	refresh();
-	getch();
-	mvprintw(width/2, (height-25)/2, "                         ");
-}
+/* Funcoes de I/O da biblioteca ncurses, qualquer dúvida ler a 
+Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/  */ 
+
+WINDOW* create_newwin(int height, int width ,int starty, int startx, Mecman mecman);
+void destroy_win(WINDOW* local_win);
+
 
 int main(int argc, char const *argv[])
 {
-	initscr();  // Initializes the library
-	cbreak();	// Allows the usage of ctrl+c to interrupt the program
-	noecho();	// Makes it so that pressed characters are not printed in the terminal
+	
+	WINDOW * my_win;
+	
+	initscr();  //Inicia a biblioteca
+	cbreak();	//Permite o uso de ctrl+c para interromper o programa
+	keypad(stdscr, TRUE);
+	
+	int max_height, max_width;
 
-	// Receives the width and height of the screen
-	int width, height;
-	getmaxyx(stdscr, width, height);
+	getmaxyx(stdscr, max_height, max_width); //Pega a altura e a largura da sua janela do terminal
 
-	gameStart(width, height); // Shows the starting screen
+	int startx = (max_width - WIDTH)/2, starty = (max_height - HEIGHT)/2;
+	int ch;
 
-	// Initializes the classes
-	Mecman mecman(height/2, width/2, RIGHT, 'M');
-	// TODO Set default spawning coordinates and direction for ghosts
-	Blinky blinky(0,0,0, 'B');
-	Pinky pinky(0,0,0, 'P');
-	Inky inky(0,0,0, 'I');
-	Clyde clyde(0,0,0, 'C');
-	Scoreboard scoreboard(3,0,1);
+	
+	Mecman mecman(WIDTH/2-1, HEIGHT/2+2);
 
-	// Initializes the game threads
-	thread one(GameThreads::receiveInput, mecman); 				// Receives user input for Mecman's movement
-	thread two(GameThreads::showMovement, mecman);				// Shows Mecman moving
-	thread three(GameThreads::ghostBehavior, blinky, mecman); 	// Initializes ghost behavior
-	thread four(GameThreads::ghostBehavior, pinky, mecman);
-	thread five(GameThreads::ghostBehavior, inky, mecman);
-	thread six(GameThreads::ghostBehavior, clyde, mecman);
-	thread seven(GameThreads::showMovement, blinky);			// Shows ghosts moving
-	thread eight(GameThreads::showMovement, pinky);
-	thread nine(GameThreads::showMovement, inky);
-	thread ten(GameThreads::showMovement, clyde);
+	my_win = create_newwin(HEIGHT, WIDTH, starty, startx, mecman); 
 
-	// If Mecman touches a ghost, subtracts a life or ends the game
-	while(TRUE)
-		if (mecman.touching(blinky) | mecman.touching(pinky) 
-			| mecman.touching(inky) | mecman.touching(clyde))
-		{	
-			mecman.kill(); // Kills Mecman
-
-			// If Mecman has no lives left, ends the game
-			if (scoreboard.getLives() < 0)
-			{	
-				// Terminates the game threads
-				thread(one);
-				thread(two);
-				thread(three);
-				thread(four);
-				thread(five);
-				thread(six);
-				thread(seven);
-				thread(eight);
-				thread(nine);
-				thread(ten);
-
-				gameOver(width, height); // Shows the game over screen
-
-				break; // Ends the game loop
-			}
-
-			// Subtracts a life
-			scoreboard.setLives(scoreboard.getLives()-1);
+	while( (ch = getch()) != KEY_BACKSPACE){
+		
+		switch(ch)
+		{	case KEY_LEFT:				
+				mecman.setDirection(LEFT);
+				break;
+			case KEY_RIGHT:				
+				mecman.setDirection(RIGHT);
+				break;
+			case KEY_UP:				
+				mecman.setDirection(UP);
+				break;
+			case KEY_DOWN:
+				mecman.setDirection(DOWN);
+				break;
 		}
 
-	endwin(); // Closes the library
+		destroy_win(my_win);
+		mecman.move();
+		my_win = create_newwin(HEIGHT, WIDTH, starty, startx, mecman);
+	} 
+
+	endwin(); //finaliza a biblioteca
 
 	return 0;
+}
+
+WINDOW *create_newwin(int height, int width, int starty, int startx, Mecman mecman)
+{	
+	WINDOW *local_win;
+
+	local_win = newwin(height, width, starty, startx);
+	wborder(local_win, '|', '|', '-','-','#','#','#','#');				
+	wrefresh(local_win);		/* Show that box 		*/
+
+	wprintw(local_win,"%d %d", mecman.getY(), mecman.getX());
+	mvwaddch(local_win, mecman.getY(), mecman.getX(), 'C');
+	wrefresh(local_win);
+
+	return local_win;
+}
+
+void destroy_win(WINDOW *local_win)
+{	
+	/* box(local_win, ' ', ' '); : This won't produce the desired
+	 * result of erasing the window. It will leave it's four corners 
+	 * and so an ugly remnant of window. 
+	 */
+	wborder(local_win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	/* The parameters taken are 
+	 * 1. win: the window on which to operate
+	 * 2. ls: character to be used for the left side of the window 
+	 * 3. rs: character to be used for the right side of the window 
+	 * 4. ts: character to be used for the top side of the window 
+	 * 5. bs: character to be used for the bottom side of the window 
+	 * 6. tl: character to be used for the top left corner of the window 
+	 * 7. tr: character to be used for the top right corner of the window 
+	 * 8. bl: character to be used for the bottom left corner of the window 
+	 * 9. br: character to be used for the bottom right corner of the window
+	 */
+	wrefresh(local_win);
+	delwin(local_win);
 }
