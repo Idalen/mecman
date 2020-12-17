@@ -8,7 +8,8 @@ class Mecman: public Character
     public:
 
         // Uses parent constructor
-        using Character::Character;
+        explicit Mecman(int X, int Y) : Character(X, Y, RIGHT) {};
+
 
         // TODO
         // "Kills" Mecman. Happens when it touches a ghost while not invincible

@@ -28,7 +28,6 @@ int main(int argc, char const *argv[])
 	int startx = (max_width - WIDTH)/2, starty = (max_height - HEIGHT)/2;
 	int ch;
 
-	
 	Mecman mecman(WIDTH/2-1, HEIGHT/2+2);
 
 	my_win = create_newwin(HEIGHT, WIDTH, starty, startx, mecman); 

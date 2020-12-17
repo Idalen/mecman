@@ -16,7 +16,7 @@ class Character: public Entity
 
     public:
 
-        explicit Character(int X, int Y, int direction, char icon) : Entity(X, Y)
+        explicit Character(int X, int Y, int direction) : Entity(X, Y)
         {
             this->direction = direction;
             this->X = X;
@@ -43,7 +43,6 @@ class Character: public Entity
 
         // Getters/Setters
         int getDirection() {return direction;}
-        char getIcon() {return icon;}
         void setDirection(int direction) {this->direction = direction;}
         int getX(){ return this->X;}
         int getY(){ return this->Y;}
