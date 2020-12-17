@@ -1,5 +1,4 @@
 #include <unistd.h>
-#include "Entity.cpp"
 
 #define UP      0
 #define LEFT    1
@@ -7,16 +6,15 @@
 #define RIGHT   3
 #define DELAY   0
 
-class Character: public Entity
+class Character
 {
-
     private:
         int direction;
         int X, Y;
 
     public:
 
-        explicit Character(int X, int Y, int direction) : Entity(X, Y)
+        explicit Character(int X, int Y, int direction)
         {
             this->direction = direction;
             this->X = X;
@@ -42,6 +40,10 @@ class Character: public Entity
         virtual void kill() {};
 
         // Getters/Setters
+        int getX(){return X;}
+        int getY() {return Y;}
+        void setX(int X) {this->X = X;}
+        void setY(int Y) {this->Y = Y;}
         int getDirection() {return direction;}
         void setDirection(int direction) {this->direction = direction;}
         int getX(){ return this->X;}
