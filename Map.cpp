@@ -24,4 +24,4 @@ class Map
         int width = 13;
         char at(int y, int x) {return this->map[y][x];}
         void write(int y, int x, char ch) {this->map[y][x] = ch;}
-}
+};

@@ -6,7 +6,7 @@
 /* Funcoes de I/O da biblioteca ncurses, qualquer dúvida ler a 
 Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/  */ 
 
-WINDOW* create_newwin(int height, int width ,int starty, int startx, Mecman mecman);
+WINDOW* create_newwin(int starty, int startx, Map map);
 void destroy_win(WINDOW* local_win);
 
 
@@ -19,37 +19,21 @@ int main(int argc, char const *argv[])
 	cbreak();	//Permite o uso de ctrl+c para interromper o programa
 	keypad(stdscr, TRUE);
 	
+	Map map;
 	int max_height, max_width;
 
 	getmaxyx(stdscr, max_height, max_width); //Pega a altura e a largura da sua janela do terminal
 
-	int startx = (max_width - WIDTH)/2, starty = (max_height - HEIGHT)/2;
+	int startx = (max_width - map.getWidth())/2, starty = (max_height - map.getHeight())/2;
 	int ch;
 
-	Mecman mecman(WIDTH/2-1, HEIGHT/2+2);
+	my_win = create_newwin(starty, startx, map); 
 
-	my_win = create_newwin(HEIGHT, WIDTH, starty, startx, mecman); 
-
-	while( (ch = getch()) != KEY_BACKSPACE){
+	while(true){
 		
-		switch(ch)
-		{	case KEY_LEFT:				
-				mecman.setDirection(LEFT);
-				break;
-			case KEY_RIGHT:				
-				mecman.setDirection(RIGHT);
-				break;
-			case KEY_UP:				
-				mecman.setDirection(UP);
-				break;
-			case KEY_DOWN:
-				mecman.setDirection(DOWN);
-				break;
-		}
-
 		destroy_win(my_win);
-		mecman.move();
-		my_win = create_newwin(HEIGHT, WIDTH, starty, startx, mecman);
+		my_win = create_newwin(starty, startx, map);
+
 	} 
 
 	endwin(); //finaliza a biblioteca
@@ -57,16 +41,17 @@ int main(int argc, char const *argv[])
 	return 0;
 }
 
-WINDOW *create_newwin(int height, int width, int starty, int startx, Mecman mecman)
+WINDOW *create_newwin(int starty, int startx, Map map)
 {	
 	WINDOW *local_win;
 
 	local_win = newwin(height, width, starty, startx);
-	wborder(local_win, '|', '|', '-','-','#','#','#','#');				
+	wborder(local_win, '#', '#', '#','#','#','#','#','#');				
 	wrefresh(local_win);		/* Show that box 		*/
 
-	wprintw(local_win,"%d %d", mecman.getY(), mecman.getX());
-	mvwaddch(local_win, mecman.getY(), mecman.getX(), 'C');
+	for(int y = 0; y < map.getHeight(); y++)
+		for(int x = 0; map.getWidth(); x++)
+			mvwaddch(local_win, y, x, map.at(y, x));
 	wrefresh(local_win);
 
 	return local_win;
