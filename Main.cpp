@@ -1,9 +1,7 @@
 #include <ncurses.h> /* Biblioteca para o sistema de i/o do jogo. 
 					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
 #include "Mecman.cpp"
-
-#define HEIGHT 16
-#define WIDTH 51
+#include "Map.cpp"
 
 /* Funcoes de I/O da biblioteca ncurses, qualquer dúvida ler a 
 Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/  */ 
