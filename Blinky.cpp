@@ -10,7 +10,7 @@ class Blinky: public Ghost
 
         // TODO
         // Blinky chases after Mecman through the shortest path
-        void chase()
+        void chase(Character character)
         {
 
         }

@@ -8,7 +8,7 @@ class Ghost: public Character
         using Character::Character;
 
         // Determines the pathing of the Ghost while Pacman is not invincible
-        virtual void chase() {};
+        virtual void chase(Character character) {};
 
         // Determines the pathing of the Ghost while Pacman is invincible
         virtual void scatter() {};
