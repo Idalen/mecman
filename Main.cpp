@@ -1,7 +1,5 @@
-#include <ncurses.h> /* Biblioteca para o sistema de i/o do jogo. 
-					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
+
 #include "Mecman.cpp"
-#include "Map.cpp"
 
 /* Funcoes de I/O da biblioteca ncurses, qualquer dúvida ler a 
 Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/  */ 
@@ -19,18 +17,24 @@ int main(int argc, char const *argv[])
 	keypad(stdscr, TRUE);
 	
 	Map map;
+	Mecman mecman(6, 13);
 	int max_height, max_width;
 
 	getmaxyx(stdscr, max_height, max_width); //Pega a altura e a largura da sua janela do terminal
 
-	int startx = (max_width - map.getWidth())/2, starty = (max_height - map.getHeight())/2;
+	int startx = (max_width - WIDTH)/2, starty = (max_height - HEIGHT)/2;
 	int ch;
 
 	my_win = create_newwin(starty, startx, map); 
 
-	while(true){
+	while((ch=getch()) != KEY_BACKSPACE){
+		
+		mecman.input(ch);
 		
 		destroy_win(my_win);
+
+		mecman.move();
+		
 		my_win = create_newwin(starty, startx, map);
 
 	} 
@@ -44,12 +48,12 @@ WINDOW *create_newwin(int starty, int startx, Map map)
 {	
 	WINDOW *local_win;
 
-	local_win = newwin(height, width, starty, startx);
+	local_win = newwin(HEIGHT, WIDTH, starty, startx);
 	wborder(local_win, '#', '#', '#','#','#','#','#','#');				
 	wrefresh(local_win);		/* Show that box 		*/
 
-	for(int y = 0; y < map.getHeight(); y++)
-		for(int x = 0; map.getWidth(); x++)
+	for(int y = 0; y < HEIGHT; y++)
+		for(int x = 0; WIDTH; x++)
 			mvwaddch(local_win, y, x, map.at(y, x));
 	wrefresh(local_win);
 

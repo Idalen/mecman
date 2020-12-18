@@ -4,7 +4,7 @@
 class Map
 {
     protected:
-    
+        
         char map[HEIGHT][WIDTH] =
         {
             {'#','#','#','#','#','#','#','#','#','#','#','#','#'},

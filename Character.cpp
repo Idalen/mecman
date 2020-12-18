@@ -1,5 +1,5 @@
 #include <unistd.h>
-//#include "Map.cpp"
+#include "Map.cpp"
 
 #define UP      0
 #define LEFT    1
