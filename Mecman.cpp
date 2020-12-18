@@ -2,6 +2,8 @@
 #include <cstring>
 #include <pthread.h>
 #include "Character.cpp"
+#include <ncurses.h> /* Biblioteca para o sistema de i/o do jogo. 
+					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
 
 class Mecman: public Character
 {
@@ -17,9 +19,9 @@ class Mecman: public Character
 
         }
 
-        void input()
+        void input(int ch)
         {
-            switch(getch())
+            switch(ch)
             {	
                 case KEY_LEFT:				
                     setDirection(LEFT);

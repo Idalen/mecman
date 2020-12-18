@@ -14,7 +14,7 @@ class GameThreads
 			while(1)
 			{
 				timeout(0);
-				mecman.input(); /**
+				mecman.input(0); /**
 										* TODO Resolver o bug que faz com que o programa lembre das
 										* TODO teclas apertadas
 										*/
