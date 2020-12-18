@@ -1,5 +1,5 @@
 #include <unistd.h>
-#include "Map.cpp"
+//#include "Map.cpp"
 
 #define UP      0
 #define LEFT    1
@@ -10,8 +10,8 @@
 class Character
 {
     protected:
-        int direction;
-        int X, Y;
+        int direction, X, Y;
+        char icon;
 
     public:
 
@@ -49,7 +49,7 @@ class Character
         virtual void kill() {};
 
         // Verifies if the Character is going to hit a wall
-        bool goingToHitWall(Map map)
+        /*bool goingToHitWall(Map map)
         {
             switch(direction)
             {
@@ -68,7 +68,7 @@ class Character
             }
 
             return false;
-        }
+        }*/
 
         virtual void changeDirection() {};
 
@@ -76,7 +76,9 @@ class Character
         int getX(){return X;}
         int getY() {return Y;}
         int getDirection() {return direction;}
+        char getIcon() {return icon;}
         void setX(int X) {this->X = X;}
         void setY(int Y) {this->Y = Y;}
         void setDirection(int direction) {this->direction = direction;}
+        void setIcon(char icon) {this->icon = icon;}
 };

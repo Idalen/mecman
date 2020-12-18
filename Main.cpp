@@ -9,7 +9,6 @@ Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/  */
 WINDOW* create_newwin(int height, int width ,int starty, int startx, Mecman mecman);
 void destroy_win(WINDOW* local_win);
 
-
 int main(int argc, char const *argv[])
 {
 	
@@ -30,22 +29,11 @@ int main(int argc, char const *argv[])
 
 	my_win = create_newwin(HEIGHT, WIDTH, starty, startx, mecman); 
 
-	while( (ch = getch()) != KEY_BACKSPACE){
-		
-		switch(ch)
-		{	case KEY_LEFT:				
-				mecman.setDirection(LEFT);
-				break;
-			case KEY_RIGHT:				
-				mecman.setDirection(RIGHT);
-				break;
-			case KEY_UP:				
-				mecman.setDirection(UP);
-				break;
-			case KEY_DOWN:
-				mecman.setDirection(DOWN);
-				break;
-		}
+	while( (ch = getch()) != KEY_BACKSPACE)
+	{
+		timeout(0);
+		mecman.input();
+		refresh();
 
 		destroy_win(my_win);
 		mecman.move();

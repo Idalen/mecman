@@ -1,7 +1,12 @@
+#define HEIGHT 15
+#define WIDTH 13
+
 class Map
 {
-    private:
-        char map[15][13] = {
+    protected:
+    
+        char map[HEIGHT][WIDTH] =
+        {
             {'#','#','#','#','#','#','#','#','#','#','#','#','#'},
             {'#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#'},
             {'#',' ','#',' ','#','#','#','#','#',' ','#',' ','#'},
@@ -20,8 +25,7 @@ class Map
         };
 
     public:
-        int height = 15;
-        int width = 13;
+
         char at(int y, int x) {return this->map[y][x];}
         void write(int y, int x, char ch) {this->map[y][x] = ch;}
-}
+};

@@ -12,8 +12,8 @@ class Clyde: public Ghost
         // Clyde moves randomly
         void chase()
         {       
-                while (goingToHitWall())
-                        this->direction = rand()%4;
+                /*while (goingToHitWall())
+                        this->direction = rand()%4;*/
         }
 
         // TODO
