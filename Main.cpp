@@ -9,7 +9,6 @@ Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/  */
 WINDOW* create_newwin(int starty, int startx, Map map);
 void destroy_win(WINDOW* local_win);
 
-
 int main(int argc, char const *argv[])
 {
 	

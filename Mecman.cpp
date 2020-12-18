@@ -17,6 +17,25 @@ class Mecman: public Character
 
         }
 
+        void input()
+        {
+            switch(getch())
+            {	
+                case KEY_LEFT:				
+                    setDirection(LEFT);
+                    break;
+                case KEY_RIGHT:				
+                    setDirection(RIGHT);
+                    break;
+                case KEY_UP:				
+                    setDirection(UP);
+                    break;
+                case KEY_DOWN:
+                    setDirection(DOWN);
+                    break;
+            }
+        }
+
         // Getters/Setters
         int getInvincibilityTime() {return invincibilityTime;}
         void setInvincibilityTime(int invincibilityTime) {this->invincibilityTime = invincibilityTime;}
