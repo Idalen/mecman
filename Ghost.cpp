@@ -1,4 +1,4 @@
-#include "Character.cpp"
+#include "Character.h"
 
 class Ghost: public Character
 {

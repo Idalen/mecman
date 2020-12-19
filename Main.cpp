@@ -1,5 +1,5 @@
-
 #include "Mecman.cpp"
+#include "Ghost.cpp"
 
 /* Funcoes de I/O da biblioteca ncurses, qualquer dúvida ler a 
 Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/  */ 
@@ -49,11 +49,11 @@ WINDOW *create_newwin(int starty, int startx, Map map)
 	WINDOW *local_win;
 
 	local_win = newwin(HEIGHT, WIDTH, starty, startx);
-	wborder(local_win, '#', '#', '#','#','#','#','#','#');				
+	wborder(local_win, '$', '$', '$','$','$','$','$','$');				
 	wrefresh(local_win);		/* Show that box 		*/
 
 	for(int y = 0; y < HEIGHT; y++)
-		for(int x = 0; WIDTH; x++)
+		for(int x = 0; x < WIDTH; x++)
 			mvwaddch(local_win, y, x, map.at(y, x));
 	wrefresh(local_win);
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <pthread.h>
-#include "Character.cpp"
+#include "Character.h"
 #include <ncurses.h> /* Biblioteca para o sistema de i/o do jogo. 
 					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
 
