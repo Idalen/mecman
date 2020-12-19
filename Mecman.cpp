@@ -10,7 +10,7 @@ class Mecman: public Character
     public:
 
         // Uses parent constructor
-        explicit Mecman(int X, int Y) : Character(X, Y, RIGHT) {};
+        explicit Mecman(int Y, int X, Map* map) : Character(Y, X, map, RIGHT, 'C') {};
 
         // TODO
         // "Kills" Mecman. Happens when it touches a ghost while not invincible

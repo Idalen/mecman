@@ -3,7 +3,7 @@
 #include <ncurses.h> /* Biblioteca para o sistema de I/O do jogo. 
 					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
 
-class GameThreads
+/*class GameThreads
 {
 	public:
 
@@ -14,11 +14,7 @@ class GameThreads
 			while(1)
 			{
 				timeout(0);
-				mecman.input(0); /**
-										* TODO Resolver o bug que faz com que o programa lembre das
-										* TODO teclas apertadas
-										*/
-
+				mecman.input(0); 
 				refresh();
 			}
 
@@ -45,4 +41,4 @@ class GameThreads
 					ghost.scatter();
 			}
 		}
-};
+};*/

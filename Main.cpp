@@ -17,7 +17,9 @@ int main(int argc, char const *argv[])
 	keypad(stdscr, TRUE);
 	
 	Map map;
-	Mecman mecman(6, 13);
+	Mecman mecman(6, 13, &map);
+	Ghost ghost(7, 6, &map);
+
 	int max_height, max_width;
 
 	getmaxyx(stdscr, max_height, max_width); //Pega a altura e a largura da sua janela do terminal
@@ -30,10 +32,12 @@ int main(int argc, char const *argv[])
 	while((ch=getch()) != KEY_BACKSPACE){
 		
 		mecman.input(ch);
+		ghost.changeDirection();
 		
 		destroy_win(my_win);
-
-		mecman.move();
+		
+		mecman.move(&map);
+		ghost.move(&map);
 		
 		my_win = create_newwin(starty, startx, map);
 

@@ -18,8 +18,8 @@ class Character
 
     public:
 
-        explicit Character(int X, int Y, int direction);
-        void move();
+        explicit Character(int Y, int X, Map* map, int direction, char icon);
+        void move(Map* map);
         virtual void kill();
         virtual void changeDirection();
         int getX();

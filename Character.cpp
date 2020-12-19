@@ -1,31 +1,38 @@
 #include "Character.h"
 
-Character::Character(int X, int Y, int direction)
+Character::Character(int X, int Y, Map* map, int direction, char icon)
 {
+    this->icon = icon; 
     this->direction = direction;
     this->X = X;
     this->Y = Y;
+
+    map->write(Y, X, icon);
 }
 
-void Character::move()
+void Character::move(Map* map)
 {
     usleep(DELAY);
+
+    map->write(this->Y, this->X, ' ');
 
     switch(direction)
     {
         case UP:
-            Y++;
+            this->Y--;
             break;
         case LEFT:
-            X--;
+            this->X--;
             break;
         case DOWN:
-            Y--;
+            this->Y++;
             break;
         case RIGHT:
-            X++;
+            this->X++;
             break;
     }
+
+    map->write(this->Y, this->X, this->icon);
 }
 
     
