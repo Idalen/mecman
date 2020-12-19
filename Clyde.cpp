@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include "Ghost.cpp"
 
 // Orange ghost

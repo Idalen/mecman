@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character(int X, int Y, Map* map, int direction, char icon)
+Character::Character(int Y, int X, Map* map, int direction, char icon)
 {
     this->icon = icon; 
     this->direction = direction;
@@ -14,21 +14,27 @@ void Character::move(Map* map)
 {
     usleep(DELAY);
 
+
+
     map->write(this->Y, this->X, ' ');
 
     switch(direction)
     {
         case UP:
-            this->Y--;
+            if(map->at(this->Y-1, this->X) == ' ')    
+                this->Y--;
             break;
         case LEFT:
-            this->X--;
+            if(map->at(this->Y, this->X-1) == ' ')
+                this->X--;
             break;
         case DOWN:
-            this->Y++;
+            if(map->at(this->Y+1, this->X) == ' ')
+                this->Y++;
             break;
         case RIGHT:
-            this->X++;
+            if(map->at(this->Y, this->X+1) == ' ')
+                this->X++;
             break;
     }
 

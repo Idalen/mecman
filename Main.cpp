@@ -15,9 +15,10 @@ int main(int argc, char const *argv[])
 	initscr();  //Inicia a biblioteca
 	cbreak();	//Permite o uso de ctrl+c para interromper o programa
 	keypad(stdscr, TRUE);
+	nodelay(stdscr, TRUE);
 	
 	Map map;
-	Mecman mecman(6, 13, &map);
+	Mecman mecman(13, 6, &map);
 	Ghost ghost(7, 6, &map);
 
 	int max_height, max_width;
