@@ -14,28 +14,27 @@ void Character::move(Map* map)
 {
     usleep(DELAY);
 
-
-
     map->write(this->Y, this->X, ' ');
-
+    
     switch(direction)
     {
         case UP:
-            if(map->at(this->Y-1, this->X) == ' ')    
+            if(map->at(this->Y-1, this->X) != '#')    
                 this->Y--;
             break;
         case LEFT:
-            if(map->at(this->Y, this->X-1) == ' ')
+            if(map->at(this->Y, this->X-1) != '#')
                 this->X--;
             break;
         case DOWN:
-            if(map->at(this->Y+1, this->X) == ' ')
+            if(map->at(this->Y+1, this->X) != '#')
                 this->Y++;
             break;
         case RIGHT:
-            if(map->at(this->Y, this->X+1) == ' ')
+            if(map->at(this->Y, this->X+1) != '#')
                 this->X++;
             break;
+
     }
 
     map->write(this->Y, this->X, this->icon);

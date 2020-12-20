@@ -8,8 +8,7 @@
 #define LEFT    1
 #define DOWN    2
 #define RIGHT   3
-#define STOP    4
-#define DELAY   200000
+#define DELAY   2000000
 
 class Character
 {

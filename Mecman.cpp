@@ -7,6 +7,9 @@
 
 class Mecman: public Character
 {
+    private:
+        bool alive = TRUE;
+
     public:
 
         // Uses parent constructor
@@ -36,6 +39,21 @@ class Mecman: public Character
                     setDirection(DOWN);
                     break;
             }
+        }
+
+        void move(Map* map){
+            
+            if(map->at(this->Y, this->X) == 'M')
+                this->alive = FALSE;
+
+            Character::move(map);
+
+            if(map->at(this->Y, this->X) == 'M')
+                this->alive = FALSE;
+        }
+
+        bool isAlive(){
+            return this->alive;
         }
 
         // Getters/Setters

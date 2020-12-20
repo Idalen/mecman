@@ -1,5 +1,4 @@
-#include "Mecman.cpp"
-#include "Ghost.cpp"
+#include "GameThreads.h"
 
 /* Funcoes de I/O da biblioteca ncurses, qualquer dúvida ler a 
 Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/  */ 
@@ -15,7 +14,7 @@ int main(int argc, char const *argv[])
 	initscr();  //Inicia a biblioteca
 	cbreak();	//Permite o uso de ctrl+c para interromper o programa
 	keypad(stdscr, TRUE);
-	nodelay(stdscr, TRUE);
+	//nodelay(stdscr, TRUE);
 	
 	Map map;
 	Mecman mecman(13, 6, &map);
@@ -26,23 +25,24 @@ int main(int argc, char const *argv[])
 	getmaxyx(stdscr, max_height, max_width); //Pega a altura e a largura da sua janela do terminal
 
 	int startx = (max_width - WIDTH)/2, starty = (max_height - HEIGHT)/2;
-	int ch;
+	int ch = KEY_RIGHT;
 
 	my_win = create_newwin(starty, startx, map); 
+	
+	std::thread t_input(input_thread, 1, &ch);
+	std::thread t_ghost(ghost_thread, 2, &ghost, &map);
+	std::thread t_mecman(mecman_thread, 3, &ch, &mecman, &map);	
 
-	while((ch=getch()) != KEY_BACKSPACE){
-		
-		mecman.input(ch);
-		ghost.changeDirection();
-		
-		destroy_win(my_win);
-		
-		mecman.move(&map);
-		ghost.move(&map);
-		
+	int i =0; 
+	
+	
+	while(mecman.isAlive()){		
+		mvprintw(0, 0, "%d %d", ++i, ch);
+
+		usleep(DELAY/5);
+		destroy_win(my_win);		
 		my_win = create_newwin(starty, startx, map);
-
-	} 
+	}
 
 	endwin(); //finaliza a biblioteca
 
@@ -54,7 +54,7 @@ WINDOW *create_newwin(int starty, int startx, Map map)
 	WINDOW *local_win;
 
 	local_win = newwin(HEIGHT, WIDTH, starty, startx);
-	wborder(local_win, '$', '$', '$','$','$','$','$','$');				
+	//wborder(local_win, ' ',' ',' ',' ',' ',' ',' ',' ');				
 	wrefresh(local_win);		/* Show that box 		*/
 
 	for(int y = 0; y < HEIGHT; y++)
@@ -71,7 +71,7 @@ void destroy_win(WINDOW *local_win)
 	 * result of erasing the window. It will leave it's four corners 
 	 * and so an ugly remnant of window. 
 	 */
-	wborder(local_win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	//wborder(local_win,'#','#','#','#','#','#','#','#');
 	/* The parameters taken are 
 	 * 1. win: the window on which to operate
 	 * 2. ls: character to be used for the left side of the window 

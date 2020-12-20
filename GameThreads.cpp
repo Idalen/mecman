@@ -1,44 +1,31 @@
-#include "Mecman.cpp"
-#include "Ghost.cpp"
-#include <ncurses.h> /* Biblioteca para o sistema de I/O do jogo. 
-					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
+#include "GameThreads.h"
 
-/*class GameThreads
-{
-	public:
+void mecman_thread(int id, int* input, Mecman* mecman, Map* map){
 
-		GameThreads();
+	while(TRUE)
+	{
+		mecman->input(*input);
+		mecman->move(map);
 
-		void receiveInput(Mecman mecman)
-		{
-			while(1)
-			{
-				timeout(0);
-				mecman.input(0); 
-				refresh();
-			}
+		mvprintw(2, 0, "%d %d %d", mecman->getY(), mecman->getX() ,  *input);
+	}
 
-			endwin();
-		}
+}
 
-		void showMovement(Character character)
-		{
-			while (1)
-			{
-				mvaddch(character.getY(), character.getX(), ' ');
-				character.move();
-				mvaddch(character.getY(), character.getX(), character.getIcon());
-			}
-		}
+void ghost_thread(int id, Ghost* ghost, Map* map){
 
-		void ghostBehavior(Ghost ghost, Mecman mecman)
-		{
-			while (1)
-			{
-				if (mecman.getInvincibilityTime() == 0)
-					ghost.chase(mecman);
-				else
-					ghost.scatter();
-			}
-		}
-};*/
+	while (TRUE)
+	{
+		ghost->changeDirection();
+		ghost->move(map);
+
+		mvprintw(4, 0, "%d %d", ghost->getY(), ghost->getX());
+	}
+	
+}
+
+void input_thread(int id, int* input){
+
+	while(TRUE)
+		*input = getch();
+}
