@@ -4,6 +4,9 @@
 #include "Character.h"
 #include <ncurses.h> /* Biblioteca para o sistema de i/o do jogo. 
 					    Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ */
+#ifndef MECMAN_H
+#define MECMAN_H
+
 
 class Mecman: public Character
 {
@@ -18,3 +21,5 @@ class Mecman: public Character
         bool isAlive();
     
 };
+
+#endif
