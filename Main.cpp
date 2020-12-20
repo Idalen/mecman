@@ -19,6 +19,7 @@ int main(int argc, char const *argv[])
 	Map map;
 	Mecman mecman(13, 6, &map);
 	Ghost ghost(7, 6, &map);
+	std::mutex write_read_m;
 
 	int max_height, max_width;
 
@@ -30,8 +31,8 @@ int main(int argc, char const *argv[])
 	my_win = create_newwin(starty, startx, map); 
 	
 	std::thread t_input(input_thread, 1, &ch);
-	std::thread t_ghost(ghost_thread, 2, &ghost, &map, &mecman);
-	std::thread t_mecman(mecman_thread, 3, &ch, &mecman, &map);	
+	std::thread t_ghost(ghost_thread, 2, &ghost, &map, &mecman, &write_read_m);
+	std::thread t_mecman(mecman_thread, 3, &ch, &mecman, &map, &write_read_m);	
 
 	int i = 0; 
 	
@@ -39,7 +40,7 @@ int main(int argc, char const *argv[])
 	while(mecman.isAlive()){		
 		mvprintw(0, 0, "%d %d", ++i, ch);
 
-		usleep(DELAY/5);
+		usleep(DELAY/2);
 		destroy_win(my_win);		
 		my_win = create_newwin(starty, startx, map);
 	}

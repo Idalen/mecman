@@ -7,14 +7,16 @@ Character::Character(int Y, int X, Map* map, int direction, char icon)
     this->X = X;
     this->Y = Y;
 
-    map->write(Y, X, icon);
+    map->write(Y, X, icon); 
 }
 
-void Character::move(Map* map)
+void Character::move(Map* map, std::mutex* write_read_m)
 {
     usleep(DELAY);
 
+    write_read_m->lock();
     map->write(this->Y, this->X, ' ');
+    write_read_m->unlock();
     
     switch(direction)
     {
@@ -37,7 +39,9 @@ void Character::move(Map* map)
 
     }
 
+    write_read_m->lock();
     map->write(this->Y, this->X, this->icon);
+    write_read_m->unlock();
 }
 
     

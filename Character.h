@@ -1,5 +1,6 @@
 #include "Map.h"
 #include <unistd.h> //delay
+#include <mutex>
 
 #ifndef CHARACTER_H
 #define CHARACTER_H
@@ -8,7 +9,7 @@
 #define LEFT    1
 #define DOWN    2
 #define RIGHT   3
-#define DELAY   500000
+#define DELAY   100000
 
 class Character
 {
@@ -19,7 +20,7 @@ class Character
     public:
 
         explicit Character(int Y, int X, Map* map, int direction, char icon);
-        void move(Map* map);
+        void move(Map* map, std::mutex* write_read_m);
         virtual void kill();
         virtual void changeDirection();
         int getX();
