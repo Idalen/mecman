@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
 	std::thread t_ghost(ghost_thread, 2, &ghost, &map);
 	std::thread t_mecman(mecman_thread, 3, &ch, &mecman, &map);	
 
-	int i =0; 
+	int i = 0; 
 	
 	
 	while(mecman.isAlive()){		

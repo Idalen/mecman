@@ -1,4 +1,4 @@
-#include "Mecman.cpp"
+#include "Mecman.h"
 #include "Ghost.cpp"
 #include <thread>
 
