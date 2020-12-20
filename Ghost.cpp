@@ -1,5 +1,4 @@
-#include "Character.h"
-#include <cstdlib>
+#include "Ghost.h"
 
 class Ghost: public Character
 {
@@ -23,5 +22,16 @@ class Ghost: public Character
         void kill()
         {
 
+        }
+        
+        void move(Map* map, Mecman* mecman){
+            
+            if(map->at(this->Y, this->X) == 'C')
+                mecman->kill();
+
+            Character::move(map);
+
+            if(map->at(this->Y, this->X) == 'C')
+                mecman->kill();
         }
 };

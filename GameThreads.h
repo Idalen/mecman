@@ -1,5 +1,5 @@
 #include "Mecman.h"
-#include "Ghost.cpp"
+#include "Ghost.h"
 #include <thread>
 
 #ifndef GAME_THREADS_H

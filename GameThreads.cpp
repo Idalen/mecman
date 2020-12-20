@@ -12,12 +12,12 @@ void mecman_thread(int id, int* input, Mecman* mecman, Map* map){
 
 }
 
-void ghost_thread(int id, Ghost* ghost, Map* map){
+void ghost_thread(int id, Ghost* ghost, Map* map, Mecman* mecman){
 
 	while (TRUE)
 	{
 		ghost->changeDirection();
-		ghost->move(map);
+		ghost->move(map, mecman);
 
 		mvprintw(4, 0, "%d %d", ghost->getY(), ghost->getX());
 	}

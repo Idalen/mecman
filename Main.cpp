@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
 	my_win = create_newwin(starty, startx, map); 
 	
 	std::thread t_input(input_thread, 1, &ch);
-	std::thread t_ghost(ghost_thread, 2, &ghost, &map);
+	std::thread t_ghost(ghost_thread, 2, &ghost, &map, &mecman);
 	std::thread t_mecman(mecman_thread, 3, &ch, &mecman, &map);	
 
 	int i = 0; 
