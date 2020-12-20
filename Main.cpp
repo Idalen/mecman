@@ -44,6 +44,8 @@ int main(int argc, char const *argv[])
 		my_win = create_newwin(starty, startx, map);
 	}
 
+	destroy_win(my_win);
+
 	endwin(); //finaliza a biblioteca
 
 	return 0;

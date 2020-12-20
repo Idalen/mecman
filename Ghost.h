@@ -14,8 +14,6 @@ class Ghost: public Character
     public:
         explicit Ghost(int Y, int X, Map* map) : Character(Y, X, map, RIGHT, 'M'){}
         void changeDirection();
-        virtual void chase(Character character);
-        virtual void scatter();
         void kill();
         void move(Map* map, Mecman* mecman);
 };
