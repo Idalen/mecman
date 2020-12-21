@@ -5,9 +5,14 @@ void mecman_thread(int id, int* input, Mecman* mecman, Map* map, std::mutex* wri
 
 	while(TRUE)
 	{
+		usleep(DELAY);
+		
+		write_read_m->lock();
+		
 		mecman->input(*input);
+		mecman->move(map);
 
-		mecman->move(map, write_read_m);
+		write_read_m->unlock();
 
 		mvprintw(2, 0, "%d %d %d", mecman->getY(), mecman->getX() , *input);
 	}
@@ -18,9 +23,15 @@ void ghost_thread(int id, Ghost* ghost, Map* map, Mecman* mecman, std::mutex* wr
 
 	while (TRUE)
 	{
-		ghost->changeDirection();
 
-		ghost->move(map, mecman, write_read_m);
+		usleep(DELAY);
+
+		write_read_m->lock();
+		
+		ghost->changeDirection();
+		ghost->move(map, mecman);
+		
+		write_read_m->unlock();
 
 		mvprintw(4, 0, "%d %d", ghost->getY(), ghost->getX());
 	}

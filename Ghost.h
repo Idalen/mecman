@@ -15,7 +15,7 @@ class Ghost: public Character
         explicit Ghost(int Y, int X, Map* map) : Character(Y, X, map, RIGHT, 'M'){}
         void changeDirection();
         void kill();
-        void move(Map* map, Mecman* mecman, std::mutex* write_read_m);
+        void move(Map* map, Mecman* mecman);
 };
 
 #endif
