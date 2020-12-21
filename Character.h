@@ -20,7 +20,7 @@ class Character
     public:
 
         explicit Character(int Y, int X, Map* map, int direction, char icon);
-        void move(Map* map, std::mutex* write_read_m);
+        void move(Map* map);
         virtual void kill();
         virtual void changeDirection();
         int getX();

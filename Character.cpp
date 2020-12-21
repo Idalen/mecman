@@ -10,14 +10,11 @@ Character::Character(int Y, int X, Map* map, int direction, char icon)
     map->write(Y, X, icon); 
 }
 
-void Character::move(Map* map, std::mutex* write_read_m)
-{
-    usleep(DELAY);
-
-    write_read_m->lock();
+void Character::move(Map* map)
+{   
     map->write(this->Y, this->X, ' ');
-    write_read_m->unlock();
     
+
     switch(direction)
     {
         case UP:
@@ -39,9 +36,9 @@ void Character::move(Map* map, std::mutex* write_read_m)
 
     }
 
-    write_read_m->lock();
+    
     map->write(this->Y, this->X, this->icon);
-    write_read_m->unlock();
+
 }
 
     

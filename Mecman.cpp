@@ -24,19 +24,16 @@
         }
     }
 
-    void Mecman::move(Map* map, std::mutex* write_read_m){
+    void Mecman::move(Map* map){
         
-        write_read_m->lock();
         if(map->at(this->Y, this->X) == 'M')
             this->alive = FALSE;
-        write_read_m->unlock();
+       
+        Character::move(map);
 
-        Character::move(map, write_read_m);
-
-        write_read_m->lock();
         if(map->at(this->Y, this->X) == 'M')
             this->alive = FALSE;
-        write_read_m->unlock();
+       
     }
 
     bool Mecman::isAlive(){
