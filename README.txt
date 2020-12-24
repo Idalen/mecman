@@ -10,7 +10,7 @@ Nomes:	Daniel Martins Vieira - 11215719
 		no terminal, logo em seguida ao comando gitclone. Após baixar, é necessário
 		escrever make all e make run para, respectivamente, compilar e iniciar o jogo.
 		Por fim, depois de fechá-lo, precisa-se escrever, novamente no terminal, make
-		clean para limpar toda a memória alocada para o divertimento.
+		clean para limpar toda a memória alocada.
 	1.2 Como jogar
 		Inspirado no famoso jogo homônimo, esta versão se limita a fugir
 		incessantemente de um único fantasma sem coletar quaisquer pontos. O jogador,
