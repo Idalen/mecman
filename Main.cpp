@@ -33,12 +33,9 @@ int main(int argc, char const *argv[])
 	std::thread t_input(input_thread, 1, &ch);
 	std::thread t_ghost(ghost_thread, 2, &ghost, &map, &mecman, &write_read_m);
 	std::thread t_mecman(mecman_thread, 3, &ch, &mecman, &map, &write_read_m);	
-
-	int i = 0; 
-	
 	
 	while(mecman.isAlive()){		
-		mvprintw(0, 0, "%d %d", ++i, ch);
+		mvprintw(0, 0, "score: %d", mecman.getScore());
 
 		usleep(DELAY/2);
 		destroy_win(my_win);		

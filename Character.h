@@ -9,7 +9,7 @@
 #define LEFT    1
 #define DOWN    2
 #define RIGHT   3
-#define DELAY   100000
+#define DELAY   200000
 
 class Character
 {
@@ -18,11 +18,9 @@ class Character
         char icon;
 
     public:
-
+    
         explicit Character(int Y, int X, Map* map, int direction, char icon);
-        void move(Map* map);
-        virtual void kill();
-        virtual void changeDirection();
+        char move(Map* map, char last_icon);
         int getX();
         int getY();
         int getDirection();

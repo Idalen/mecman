@@ -13,7 +13,7 @@ void Ghost::move(Map* map, Mecman* mecman){
     if(map->at(this->Y, this->X) == 'C')
         mecman->kill();
 
-    Character::move(map);
+    this->last_icon = Character::move(map, this->last_icon);
     
     if(map->at(this->Y, this->X) == 'C')
         mecman->kill();

@@ -10,9 +10,10 @@ Character::Character(int Y, int X, Map* map, int direction, char icon)
     map->write(Y, X, icon); 
 }
 
-void Character::move(Map* map)
+char Character::move(Map* map, char last_icon)
 {   
-    map->write(this->Y, this->X, ' ');
+
+    map->write(this->Y, this->X, last_icon);
     
 
     switch(direction)
@@ -36,16 +37,13 @@ void Character::move(Map* map)
 
     }
 
-    
+    last_icon = map->at(this->Y, this->X); 
     map->write(this->Y, this->X, this->icon);
+
+    return last_icon;
 
 }
 
-    
-void Character::kill() {};
-void Character::changeDirection() {};
-
-        
 int  Character::getX(){return X;}
 int  Character::getY() {return Y;}
 int  Character::getDirection() {return direction;}

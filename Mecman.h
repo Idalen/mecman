@@ -12,6 +12,7 @@ class Mecman: public Character
 {
     private:
         bool alive = TRUE;
+        int score = 0;
 
     public:
         explicit Mecman(int Y, int X, Map* map) : Character(Y, X, map, RIGHT, 'C'){}
@@ -19,6 +20,7 @@ class Mecman: public Character
         void input(int ch);
         void move(Map* map);
         bool isAlive();
+        int getScore();
     
 };
 

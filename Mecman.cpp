@@ -29,7 +29,8 @@
         if(map->at(this->Y, this->X) == 'M')
             this->alive = FALSE;
        
-        Character::move(map);
+        char last_icon = Character::move(map, ' ');
+        if(last_icon == '.') this->score++;
 
         if(map->at(this->Y, this->X) == 'M')
             this->alive = FALSE;
@@ -38,6 +39,10 @@
 
     bool Mecman::isAlive(){
         return this->alive;
+    }
+
+    int Mecman::getScore(){
+        return this->score;
     }
 
 
