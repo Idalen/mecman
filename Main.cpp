@@ -1,9 +1,11 @@
 #include "GameThreads.h"
+#include "Database.h"
 
 /* Funcoes de I/O da biblioteca ncurses, qualquer dúvida ler a 
 Documentação em https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/  */ 
 
-WINDOW* create_newwin(int starty, int startx, Map map);
+WINDOW* create_newmap(int starty, int startx, Map map);
+WINDOW *create_newwin(int height, int width, int starty, int startx);
 void destroy_win(WINDOW* local_win);
 
 int main(int argc, char const *argv[])
@@ -14,11 +16,10 @@ int main(int argc, char const *argv[])
 	initscr();  //Inicia a biblioteca
 	cbreak();	//Permite o uso de ctrl+c para interromper o programa
 	keypad(stdscr, TRUE);
+	noecho();
 	//nodelay(stdscr, TRUE);
 	
-	Map map;
-	Mecman mecman(13, 6, &map);
-	Ghost ghost(7, 6, &map);
+	Database db;
 	std::mutex write_read_m;
 
 	int max_height, max_width;
@@ -28,28 +29,72 @@ int main(int argc, char const *argv[])
 	int startx = (max_width - WIDTH)/2, starty = (max_height - HEIGHT)/2;
 	int ch = KEY_RIGHT;
 
-	my_win = create_newwin(starty, startx, map); 
-	
-	std::thread t_input(input_thread, 1, &ch);
-	std::thread t_ghost(ghost_thread, 2, &ghost, &map, &mecman, &write_read_m);
-	std::thread t_mecman(mecman_thread, 3, &ch, &mecman, &map, &write_read_m);	
-	
-	while(mecman.isAlive()){		
-		mvprintw(0, 0, "score: %d", mecman.getScore());
+	bool on = TRUE;
+	while(on)
+	{
 
-		usleep(DELAY/2);
-		destroy_win(my_win);		
-		my_win = create_newwin(starty, startx, map);
+		Map map;
+		Mecman mecman(13, 6, &map);
+		Ghost ghost(7, 6, &map);
+
+		my_win = create_newwin(max_height, max_width, starty, startx); 
+		mvprintw(starty, startx, 
+		"Mecman\n\n Press G to play\n Press R to see the ranking\n Press Q to quit\n\n");
+		wrefresh(my_win);
+
+		ch = getch();
+
+		switch(ch){
+
+			case 'g':
+			{	
+				std::thread t_input(input_thread, 1, &ch, &mecman);	
+				std::thread t_ghost(ghost_thread, 2, &ghost, &map, &mecman, &write_read_m);
+				std::thread t_mecman(mecman_thread, 3, &ch, &mecman, &map, &write_read_m);
+
+				t_ghost.detach();
+				t_mecman.detach();	
+				t_input.detach();
+				
+				while(mecman.isAlive())
+				{		
+					mvprintw(0, 0, "score: %d", mecman.getScore());
+
+					usleep(DELAY/2);
+					destroy_win(my_win);		
+					my_win = create_newmap(starty, startx, map);
+				}
+
+
+				destroy_win(my_win);
+				db.addScore(mecman.getScore());
+				
+				break;
+			}
+
+			case 'r':
+			{	
+				mvprintw(starty, startx, "Ranking de jogadores:\n");
+				for(int i = 0; i < db.getPlayers(); i++){
+					mvprintw(starty+i, startx, "%d) Player %d -- Score: %d\n", i, i, db.getScores(i));
+				}
+				getch();
+				break;
+			}
+			
+			case 'q':{
+				on = FALSE;
+			}
+		}
+
 	}
-
-	destroy_win(my_win);
 
 	endwin(); //finaliza a biblioteca
 
 	return 0;
 }
 
-WINDOW *create_newwin(int starty, int startx, Map map)
+WINDOW *create_newmap(int starty, int startx, Map map)
 {	
 	WINDOW *local_win;
 
@@ -64,6 +109,19 @@ WINDOW *create_newwin(int starty, int startx, Map map)
 
 	return local_win;
 }
+
+WINDOW *create_newwin(int height, int width, int starty, int startx)
+{	WINDOW *local_win;
+
+	local_win = newwin(height, width, starty, startx);
+	// box(local_win, 0 , 0);		/* 0, 0 gives default characters 
+	// 				 * for the vertical and horizontal
+	// 				 * lines			*/
+	wrefresh(local_win);		/* Show that box 		*/
+
+	return local_win;
+}
+
 
 void destroy_win(WINDOW *local_win)
 {	
